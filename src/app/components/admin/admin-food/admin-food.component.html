@@ -1,0 +1,87 @@
+<div>
+    <div class="banner">
+        <h3 id="title">Food</h3>
+    </div>
+    <div class="row">
+        <div class="table-responsive" id="table">
+            <table class="table table-striped table-light table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Ingredients</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let food of foods">
+                        <tr class="table-warning">
+                            <th scope="row"><img src="{{ food.image }}" height="80" width="80"/></th>
+                            <td>{{ food.name }}</td>
+                            <td>{{ food.price }}€</td>
+                            <td>
+                                <ul>
+                                    <ng-container *ngFor="let ingredient of food.ingredients">
+                                        <li>{{ ingredient.name }}, {{ ingredient.quantity }}</li>
+                                    </ng-container>
+                                </ul>
+                            </td>
+                            <td><button (click)="onDelete(food.id);" type="submit" class="btn btn-lg btn-danger">Delete</button></td>
+                        </tr> 
+                    </ng-container>
+                    <tr>
+                        <!-- must be input type file here but I gave up with the uploads -->
+                        <td><img src="../../../../assets/img/noimage.jpg" id="image" height="80" width="80"></td>
+                        <td><input type="text" name="name" id="name" [(ngModel)]="name" placeholder="Name..."></td>
+                        <td><input type="text" name="price" id="price" [(ngModel)]="price" placeholder="price..." size="8">€</td>
+                        <td>
+                            <form class="form-inline">
+                                <select [(ngModel)]="s1" name="s1">
+                                    <ng-container *ngFor="let ingredient of Allingredients">
+                                        <option value="{{ingredient.name}}">{{ ingredient.name }}</option>
+                                    </ng-container>
+                                </select>,
+                                <input type="text" size="3" [(ngModel)]="i1" name="i1">
+                            </form>
+                            <form class="form-inline">
+                                <select [(ngModel)]="s2" name="s2">
+                                    <ng-container *ngFor="let ingredient of Allingredients">
+                                        <option value="{{ingredient.name}}">{{ ingredient.name }}</option>
+                                    </ng-container>
+                                </select>,
+                                <input type="text" size="3" [(ngModel)]="i2" name="i2">
+                            </form>
+                            <form class="form-inline">
+                                <select [(ngModel)]="s3" name="s3">
+                                    <ng-container *ngFor="let ingredient of Allingredients">
+                                        <option value="{{ingredient.name}}">{{ ingredient.name }}</option>
+                                    </ng-container>
+                                </select>,
+                                <input type="text" size="3" [(ngModel)]="i3" name="i3">
+                            </form>
+                            <form class="form-inline">
+                                <select [(ngModel)]="s4" name="s4">
+                                    <ng-container *ngFor="let ingredient of Allingredients">
+                                        <option value="{{ingredient.name}}">{{ ingredient.name }}</option>
+                                    </ng-container>
+                                </select>,
+                                <input type="text" size="3" [(ngModel)]="i4" name="i4">
+                            </form>
+                            <form class="form-inline">
+                                <select [(ngModel)]="s5" name="s5">
+                                    <ng-container *ngFor="let ingredient of Allingredients">
+                                        <option value="{{ingredient.name}}">{{ ingredient.name }}</option>
+                                    </ng-container>
+                                </select>,
+                                <input type="text" size="3" [(ngModel)]="i5" name="s5">
+                            </form>
+                        </td>
+                        <td><button (click)="addFood()" class="btn btn-lg btn-success" id="button">Add food</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>          
+    </div>
+</div>
+

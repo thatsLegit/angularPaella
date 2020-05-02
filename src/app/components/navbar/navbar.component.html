@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f4e8b8;border-radius:20px;">
+    <a class="navbar-brand" routerLink="/" style="font-size: 2em;">The restaurant</a>
+    <ul class="navbar-nav">
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/food" style="font-size: 1.5em;"> Food </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/drinks" style="font-size: 1.5em;"> Drinks </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/desserts" style="font-size: 1.5em;"> Desserts </a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" routerLink="/orders" style="font-size: 1.5em;">Orders <span *ngIf="ordersCount!=0" class="badge badge-pill badge-danger">{{ ordersCount }}</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" routerLink="/admin" style="font-size: 1.5em;color:red;">Administration</a>
+    </li>
+    </ul>
+</nav>

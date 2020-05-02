@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-md" id="desserts">
+        <div style="padding:auto;margin:auto;">
+            <h5 class="text-center">{{ dessert.name }}</h5>
+            <img src="{{ dessert.image }}" id="desserts-image">
+            <p class="text-center"><strong>{{ dessert.price }}€</strong></p>
+            <ng-container *ngIf="available">
+                <button (click)="addOrder()" class="available"><b style="padding:1px;">Order</b></button>
+            </ng-container>
+            <ng-container *ngIf="!available">
+                <button class="unavailable" disabled><b style="padding:1px;">Unavailable</b></button>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+

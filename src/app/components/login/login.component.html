@@ -1,0 +1,42 @@
+<div>
+    <a data-toggle="modal" data-target="#loginModal">
+        <input type="button" id="login" class="btn btn-light btn-lg" value="Login">
+    </a>
+    <!-- The Modal -->
+    <div class="modal" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" style="color:black">Login</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" style="padding: 5px; color:black">
+                    <div class="text-center">
+                        <form class="form" (ngSubmit)="onSubmit()">
+                            <label for="username">
+                                Username: 
+                            </label>
+                            <div class="form-group">
+                                <input type="text" id="username" name="username" placeholder="Enter username" [(ngModel)]="username">
+                            </div>
+                            <label for="username">
+                                Password: 
+                            </label>
+                            <div class="form-group">
+                                <input type="password" id="password" name="password" [(ngModel)]="password">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Connect</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

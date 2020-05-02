@@ -1,0 +1,10 @@
+.timeline-image{
+    width: 200px;
+    height: 200px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+#restaurant{
+    margin : 40px 0 0 150px;
+    font-family: 'Gloria Hallelujah', cursive;
+}
