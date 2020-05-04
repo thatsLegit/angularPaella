@@ -1,11 +1,10 @@
 import { IngredientsService } from './services/ingredients.service';
 import { OrdersService } from './services/orders.service';
 import { UsersService } from './services/users.service';
-import { DessertsService } from './services/desserts.service';
 import { FoodService } from './services/food.service';
-import { DrinksService } from './services/drinks.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -54,9 +53,10 @@ import { AdminDessertsComponent } from './components/admin/admin-desserts/admin-
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ModalModule.forRoot()
   ],
-  providers: [DrinksService, FoodService, DessertsService, UsersService, OrdersService, IngredientsService],
+  providers: [FoodService, UsersService, OrdersService, IngredientsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,21 +1,21 @@
-import { drinks } from './../../models/drinks';
-import { DrinksService } from './../../services/drinks.service';
 import { Component, OnInit } from '@angular/core';
+import { Food } from 'src/app/models/food';
+import { FoodService } from 'src/app/services/food.service';
 
 @Component({
   selector: 'app-drinks',
   templateUrl: './drinks.component.html',
-  styleUrls: ['./drinks.component.css', '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css']
+  styleUrls: ['./drinks.component.css']
 })
 export class DrinksComponent implements OnInit {
-  drinks: drinks[];
+  drinks: Food[];
 
-  constructor(private drinksService:DrinksService) {
-    this.drinksService.getDrinks().subscribe(drinks => this.drinks=drinks);
+  constructor(private foodService:FoodService) {
+    // this.drinksService.getDrinks().subscribe(drinks => this.drinks=drinks);
    }
 
   ngOnInit() {
-    this.drinksService.getDrinks().subscribe(drinks => this.drinks=drinks);
+    // this.drinksService.getDrinks().subscribe(drinks => this.drinks=drinks);
   }
 
 }

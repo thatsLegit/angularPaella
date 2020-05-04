@@ -11,10 +11,10 @@ import { OrdersComponent } from './components/orders/orders.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'food', component: FoodComponent },
-  { path: 'drinks', component: DrinksComponent },
-  { path: 'desserts', component: DessertsComponent },
-  { path: 'orders', component: OrdersComponent },
+  // { path: 'food', component: FoodComponent },
+  // { path: 'drinks', component: DrinksComponent },
+  // { path: 'desserts', component: DessertsComponent },
+  // { path: 'orders', component: OrdersComponent },
   { path: 'admin', component: AdministrationComponent }
 ];
 

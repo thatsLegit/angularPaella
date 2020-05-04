@@ -1,73 +1,90 @@
-import { orders } from './../models/orders';
+import { Order, StatusEnum } from './../models/order';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import * as uuid from 'uuid';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class OrdersService {
-  ord: orders[] = [];
-  public orders$ = new BehaviorSubject(this.ord);
-  public number$ = new BehaviorSubject(0);
 
-  constructor() { }
+  constructor(private http: HttpClient, private userService: UsersService) { }
 
-  //GET ORDER NUMBER
-  numOrders(): Observable<number> {
-    return this.number$;
-  }
+  getOrders(clientLastName?: string, clientName?: string, email?: string, foodName?: string, status?: StatusEnum):Promise<Array<Order>>{
+    let url = environment.api+'/orders';
+    let modified = false;
 
-  //UPDATE ORDER NUMBER
-  AddNumOrders() {
-    this.number$.next(this.number$.getValue() + 1);
-  }
-  SubstractNumOrders(quantity: number) {
-    this.number$.next(this.number$.getValue() - quantity);
-  }
-
-  //GET ORDERS
-  getOrders(): Observable<orders[]> {
-    return this.orders$;
-  }
-
-  //UPDATE ORDERS QUANTITY
-  updateOrders(id: String, sign: String) {
-    this.ord.forEach(order => {
-      if (order.id == id) {
-        if (sign == "minus") {
-          if (order.quantity > 1) {
-            order.quantity--;
-            order.totalPrice -= order.price;
-          }
-        } else {
-          order.quantity++;
-          order.totalPrice += order.price;
-        }
-      }
-    });
-    this.orders$.next(this.ord);
-  }
-
-  //DELETE ORDER
-  deleteOrder(id: String) {
-    this.ord = this.ord.filter(order => order.id != id);
-    this.orders$.next(this.ord);
-  }
-
-  //POST ORDER
-  addOrder(date: Date, quantity: number, price: number, name: String, image: String) {
-    for (let order of this.ord) {
-      if (name == order.name) {
-        order.quantity++;
-        order.totalPrice += order.price;
-        return;
+    if(clientLastName){
+      modified = true;
+      url += '?clientLastName='+encodeURIComponent(clientLastName);
+    }
+    
+    if(clientName){
+      if(!modified){
+        modified = true;
+        url += '?clientName='+encodeURIComponent(clientName);
+      } else {
+        url += '&clientName='+encodeURIComponent(clientName);
       }
     }
-    const id = uuid.v4();
-    let totalPrice = price;
-    let o: orders = {
-      id, date, name, quantity, price, totalPrice, image
-    };
-    this.ord.push(o);
+    
+    if(email){
+      if(!modified){
+        modified = true;
+        url += '?email='+encodeURIComponent(email);
+      } else {
+        url += '&email='+encodeURIComponent(email);
+      }
+    }
+    
+    if(foodName){
+      if(!modified){
+        modified = true;
+        url += '?foodName='+encodeURIComponent(foodName);
+      } else {
+        url += '&foodName='+encodeURIComponent(foodName);
+      }
+    }
+    
+    if(status){
+      if(!modified){
+        modified = true;
+        url += '?status='+encodeURIComponent(status);
+      } else {
+        url += '&status='+encodeURIComponent(status);
+      }
+    }
+
+    return this.http.get<Array<Order>>(url).toPromise();
   }
+  
+  getOrderById(id: number):Promise<Order>{
+    return this.http.get<Order>(environment.api+'/orders/'+id).toPromise();
+  }
+
+  createOrder(order: Order): Promise<Order>{
+    order.id = null;
+    const token = this.userService.token;
+    if(!token){
+      return null;
+    }
+    return this.http.post<Order>(environment.api+'/orders?access_token='+token, order).toPromise();
+  }
+  
+  updateOrder(order: Order): Promise<Order>{
+    const token = this.userService.token;
+    if(!token){
+      return null;
+    }
+    return this.http.put<Order>(environment.api+'/orders/'+order.id+'?access_token='+token, order).toPromise();
+  }
+
+  deleteOrder(id:String): Promise<any>{
+    const token = this.userService.token;
+    if(!token){
+      return null;
+    }
+    return this.http.delete(environment.api+'/orders/'+id+'?access_token='+token).toPromise();
+  }
+  
 
 }

@@ -1,8 +1,10 @@
-import { ingredient } from './ingredient';
-export class food{
-    id: String;
-    name: String;
-    image: String;
+export interface Food{
+    foodId: number;
+    categoryId: number;
+    name: string;
+    description: string;
     price: number;
-    ingredients: ingredient[];
+    imageURL: string;
+    active: boolean;
+    isDishOfDay: boolean;
 }

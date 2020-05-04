@@ -1,14 +1,14 @@
-import { drinks } from './../../models/drinks';
 import { Component, OnInit, Input } from '@angular/core';
 import { OrdersService } from 'src/app/services/orders.service';
+import { Food } from 'src/app/models/food';
 
 @Component({
   selector: 'app-drinks-item',
   templateUrl: './drinks-item.component.html',
-  styleUrls: ['./drinks-item.component.css', '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css']
+  styleUrls: ['./drinks-item.component.css']
 })
 export class DrinksItemComponent implements OnInit {
-  @Input() drink: drinks;
+  @Input() drink: Food;
 
   constructor(private ordersService: OrdersService) { }
 
@@ -16,8 +16,8 @@ export class DrinksItemComponent implements OnInit {
   }
 
   addOrder(){
-    this.ordersService.addOrder(new Date(), 1, this.drink.price, this.drink.name, this.drink.image);
-    this.ordersService.AddNumOrders();
+    // this.ordersService.addOrder(new Date(), 1, this.drink.price, this.drink.name, this.drink.image);
+    // this.ordersService.AddNumOrders();
   }
 
 }
