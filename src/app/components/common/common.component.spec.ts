@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminDessertsComponent } from './admin-desserts.component';
+import { CommonComponent } from './common.component';
 
-describe('AdminDessertsComponent', () => {
-  let component: AdminDessertsComponent;
-  let fixture: ComponentFixture<AdminDessertsComponent>;
+describe('CommonComponent', () => {
+  let component: CommonComponent;
+  let fixture: ComponentFixture<CommonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminDessertsComponent ]
+      declarations: [ CommonComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminDessertsComponent);
+    fixture = TestBed.createComponent(CommonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "localhost:8081",
+  api: "http://localhost:8081",
   username: 'paellarestaurant',
   password: 'paellarestaurantsecret'
 };

@@ -1,5 +1,5 @@
 import { User, PrivilegeEnum } from './../models/user';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { TokenResponse } from '../models/TokenResponse';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -9,18 +9,23 @@ export class UsersService {
   user: User;
   token: string;
 
+  user$: EventEmitter<User> = new EventEmitter();
+
   constructor(private http: HttpClient) {
     const user = localStorage.getItem('user');
 
     if(user){
       this.user = JSON.parse(user);
       this.token = localStorage.getItem('token');
+      this.user$.next(this.user);
     }
 
   }
 
-  register(user: User): Promise<User>{
-    return this.http.post<User>(environment.api+'/customers', user).toPromise();
+  async register(user: User): Promise<User>{
+    const registration = await this.http.post<User>(environment.api+'/customers', user).toPromise();
+    this.login(registration.email, registration.password);
+    return registration;
   }
   
   update(user: User): Promise<User>{
@@ -47,7 +52,7 @@ export class UsersService {
         environment.api+'/oauth/token?grant_type='+encodeURI('password')+
         '&password='+encodeURI(password)+
         '&username='+encodeURI(email), 
-        {}, {
+        null, {
           headers: {
             'Authorization': 'Basic '+btoa(environment.username+':'+environment.password),
           }
@@ -56,22 +61,26 @@ export class UsersService {
     } catch(e){
       this.user = null;
       this.token = null;
+      this.user$.next(null);
       localStorage.clear();
       return null;
     }
 
     try {
-      this.user = (await this.http.get<User>(environment.api+'/customers?email='+encodeURI(email)).toPromise())[0];
+      this.user = (await this.http.get<User>(environment.api+'/customers?email='+encodeURI(email)+'&access_token='+encodeURI(this.token)).toPromise())[0];
       delete this.user.password;
       localStorage.setItem('user', JSON.stringify(this.user));
       localStorage.setItem('token', this.token);
+      this.user$.next(this.user);
     } catch(e) {
       try { 
-        this.user = (await this.http.get<User>(environment.api+'/admins?email='+encodeURI(email)).toPromise())[0];
+        this.user = (await this.http.get<User>(environment.api+'/admins?email='+encodeURI(email)+'&access_token='+encodeURI(this.token)).toPromise())[0];
         delete this.user.password;
         localStorage.setItem('user', JSON.stringify(this.user));
         localStorage.setItem('token', this.token);
+        this.user$.next(this.user);
       } catch(e2){
+        this.user$.next(null);
         this.user = null;
         this.token = null;
         localStorage.clear();
@@ -81,6 +90,7 @@ export class UsersService {
   }
 
   logout(){
+    this.user$.next(null);
     this.user = null;
     this.token = null;
     localStorage.clear();

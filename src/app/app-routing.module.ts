@@ -1,21 +1,25 @@
-import { AdministrationComponent } from './components/admin/administration/administration.component';
-import { FoodComponent } from './components/food/food.component';
-import { HomeComponent } from './components/home/home.component';
+import { FoodComponent } from './components/common/food/food.component';
+import { HomeComponent } from './components/common/home/home.component';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DrinksComponent } from './components/drinks/drinks.component';
-import { DessertsComponent } from './components/desserts/desserts.component';
-import { OrdersComponent } from './components/orders/orders.component';
+import { OrdersComponent } from './components/common/orders/orders.component';
+import { AdminFoodComponent } from './components/admin/admin-food/admin-food.component';
+import { AdminIngredientsComponent } from './components/admin/admin-ingredients/admin-ingredients.component';
+import { AdminGuard } from './guards/admin.guard';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  // { path: 'food', component: FoodComponent },
-  // { path: 'drinks', component: DrinksComponent },
-  // { path: 'desserts', component: DessertsComponent },
-  // { path: 'orders', component: OrdersComponent },
-  { path: 'admin', component: AdministrationComponent }
+  { path: 'food', component: FoodComponent },
+  { path: 'orders', component: OrdersComponent },
+  { path: 'admin', canActivate: [AdminGuard], 
+    children: [
+      { path: 'foods', component: AdminFoodComponent },
+      // { path: 'categories', component: AdminCategoryCompnent },
+      { path: 'ingredients', component: AdminIngredientsComponent },
+    ] 
+  }
 ];
 
 

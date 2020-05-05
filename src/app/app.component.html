@@ -1,5 +1,4 @@
 <div class="container">
-    <app-top-layer></app-top-layer>
-    <app-navbar></app-navbar>
-    <router-outlet></router-outlet>
+    <app-common *ngIf="!isAdmin"></app-common>
+    <app-administration *ngIf="isAdmin"></app-administration>
 </div>

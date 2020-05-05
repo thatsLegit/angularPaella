@@ -1,4 +1,4 @@
-import { Ingredient } from './../../models/ingredient';
+import { Ingredient } from '../../../models/ingredient';
 import { Component, OnInit, Input } from '@angular/core';
 import { OrdersService } from 'src/app/services/orders.service';
 import { IngredientsService } from 'src/app/services/ingredients.service';

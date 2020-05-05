@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!loading">
     <div class="banner">
         <h3 id="title">Food</h3>
     </div>
@@ -31,13 +31,116 @@
 
 <ng-template #addFoodModal>
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Modal</h4>
+      <h4 class="modal-title pull-left">Add new food</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      This is a modal.
+        <form [formGroup]="newFoodForm" (ngSubmit)="addFood()">
+            <div class="row p-2">
+                <img class="img-fluid mx-auto d-block rounded" [src]="newFoodForm.controls.imageURL.value ? newFoodForm.controls.imageURL.value : '../../../../assets/img/noimage.jpg'">
+            </div>
+            <div class="form-row form-group">
+                <label>Image URL</label>
+                <input class="form-control" name="imageURL" formControlName="imageURL" [ngClass]="{'is-invalid': newFoodForm.controls.imageURL.status === 'INVALID' && newFoodForm.controls.imageURL.touched }">
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <label>Name</label>
+                    <input class="form-control" name="name" formControlName="name" [ngClass]="{'is-invalid': newFoodForm.controls.name.status === 'INVALID' && newFoodForm.controls.name.touched }">
+                </div>
+                <div class="col-md-6">
+                    <label>Price</label>
+                    <input class="form-control" type="number" name="price" formControlName="price" [ngClass]="{'is-invalid': newFoodForm.controls.price.status === 'INVALID' && newFoodForm.controls.price.touched }">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <label>Category</label>
+                    <select class="form-control" name="categoryId" formControlName="categoryId" [ngClass]="{'is-invalid': newFoodForm.controls.categoryId.status === 'INVALID' && newFoodForm.controls.categoryId.touched }">
+                        <option selected="true" disabled="true" [value]="null">Select a category</option>
+                        <option *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center align-items-end">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="isDishOfDay" formControlName="isDishOfDay">
+                        <label class="form-check-input">Dish of the day</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="active" formControlName="active">
+                        <label class="form-check-input">Active</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group w-100">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" formControlName="description" [ngClass]="{'is-invalid': newFoodForm.controls.description.status === 'INVALID' && newFoodForm.controls.description.touched }"></textarea>
+                </div>
+            </div>
+        
+            <div class="row justify-content-center">
+                <h4>Ingredients</h4>
+            </div>
+            <carousel [itemsPerSlide]="itemsPerSlide"
+            [singleSlideOffset]="singleSlideOffset"
+            [interval]="false">
+                <slide class="text-center" style="cursor: pointer;" (click)="openModal2(ingredientNested)">
+                    <img [src]="'../../../../assets/img/plus-box.png'" alt="image slide" style="display: block; width: 100%;">
+                    <p>Add new ingredient</p>
+                </slide>
+                <slide *ngFor="let slide of slides; let index=index">
+                    <button type="button" class="mt-2 close pull-right" aria-label="Close" (click)="deleteNewIngredient(index)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <img [src]="slide.image" alt="image slide" style="display: block; width: 100%; cursor: pointer;">
+                    <p>{{slide.title}}</p>
+                </slide>
+            </carousel>
+            <div class="container" [ngStyle]="{'marginTop': '20px'}">
+                <button class="btn btn-success btn-block" [disabled]="newFoodForm.invalid">Submit</button>
+            </div>
+        </form>
     </div>
-  </ng-template>
+</ng-template>
+
+  
+<ng-template #ingredientNested>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Ingredient</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="newIngredientForm" (ngSubmit)="addIngredient()">
+            <div class="row p-2 justify-content-center">
+                <img class="img-fluid mx-auto d-block rounded" [src]="newIngredient ? newIngredient.imageURL : '../../../../assets/img/noimage.jpg'">
+                <p *ngIf="newIngredient">{{newIngredient.description}}</p>
+            </div>
+            <div class="form-row form-group">
+                <label>Ingredient</label>
+                <select class="form-control" name="ingredientId" formControlName="ingredientId" [ngClass]="{'is-invalid': newIngredientForm.controls.ingredientId.status === 'INVALID' && newIngredientForm.controls.ingredientId.touched }">
+                    <option selected="true" disabled="true" [value]="null">Select a ingredient</option>
+                    <option *ngFor="let ingredient of ingredients" [value]="ingredient.ingredientID">{{ingredient.name}}</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <label>Unit</label>
+                    <input class="form-control" name="unit" formControlName="unit" [ngClass]="{'is-invalid': newIngredientForm.controls.unit.status === 'INVALID' && newIngredientForm.controls.unit.touched }">
+                </div>
+                <div class="col-md-6">
+                    <label>Quantity</label>
+                    <input class="form-control" type="number" name="quantity" formControlName="quantity" [ngClass]="{'is-invalid': newIngredientForm.controls.quantity.status === 'INVALID' && newIngredientForm.controls.quantity.touched }">
+                </div>
+            </div>
+            <div class="container" [ngStyle]="{'marginTop': '20px'}">
+                <button class="btn btn-success btn-block" [disabled]="newIngredientForm.invalid">Submit</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
 

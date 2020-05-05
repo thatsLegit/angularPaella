@@ -1,5 +1,5 @@
-import { OrdersService } from './../../services/orders.service';
-import { Food } from './../../models/food';
+import { OrdersService } from '../../../services/orders.service';
+import { Food } from '../../../models/food';
 import { Component, OnInit, Input } from '@angular/core';
 import { IngredientsService } from 'src/app/services/ingredients.service';
 import { Ingredient } from 'src/app/models/ingredient';
