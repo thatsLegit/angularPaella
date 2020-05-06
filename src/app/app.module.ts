@@ -7,7 +7,9 @@ import { NgModule } from '@angular/core';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxSpinnerModule } from "ngx-spinner"; 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -60,8 +62,10 @@ import { AdminGuard } from './guards/admin.guard';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgxSpinnerModule,
     ModalModule.forRoot(),
     CarouselModule.forRoot(),
+    PaginationModule.forRoot(),
     BsDropdownModule.forRoot()
   ],
   providers: [FoodService, UsersService, OrdersService, IngredientsService, CategoryService, AdminGuard],

@@ -12,11 +12,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let food of foods" class="table-warning">
-                        <th scope="row"><img src="{{ food.imageURL }}"/></th>
+                    <tr *ngFor="let food of foodsDisplayed" class="table-warning">
+                        <th scope="row"><img class="img-fluid" src="{{ food.imageURL }}"/></th>
                         <td>{{ food.name }}</td>
                         <td>{{ food.price }}€</td>
-                        <td><button (click)="onDelete(food.id);" class="btn btn-lg btn-danger">Delete</button></td>
+                        <td><button (click)="onDelete(food.foodId);" class="btn btn-lg btn-danger">Delete</button></td>
                     </tr>
                     <tr>
                         <td align="center" colspan="3">
@@ -25,8 +25,25 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="row justify-content-center">
+                <pagination
+                    [totalItems]="numberOfItems"
+                    [(ngModel)]="currentPage"
+                    [ngModelOptions]="{standalone: true}"
+                    (pageChanged)="pageChanged($event)"
+                    [itemsPerPage]="paginationLength"
+                    [maxSize]="10"
+                    [boundaryLinks]="true"
+                ></pagination>
+            </div>
         </div>          
     </div>
+</div>
+
+<div *ngIf="loading" class="loader-container">
+    <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">  
+        <p style="color: white">Please Wait. </p>  
+    </ngx-spinner>
 </div>
 
 <ng-template #addFoodModal>
@@ -60,7 +77,7 @@
                     <label>Category</label>
                     <select class="form-control" name="categoryId" formControlName="categoryId" [ngClass]="{'is-invalid': newFoodForm.controls.categoryId.status === 'INVALID' && newFoodForm.controls.categoryId.touched }">
                         <option selected="true" disabled="true" [value]="null">Select a category</option>
-                        <option *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</option>
+                        <option *ngFor="let category of categories" [value]="+category.categoryId">{{category.name}}</option>
                     </select>
                 </div>
                 <div class="col-md-6 d-flex justify-content-center align-items-end">
@@ -85,20 +102,32 @@
                 <h4>Ingredients</h4>
             </div>
             <carousel [itemsPerSlide]="itemsPerSlide"
-            [singleSlideOffset]="singleSlideOffset"
-            [interval]="false">
-                <slide class="text-center" style="cursor: pointer;" (click)="openModal2(ingredientNested)">
-                    <img [src]="'../../../../assets/img/plus-box.png'" alt="image slide" style="display: block; width: 100%;">
+            [singleSlideOffset]="true"
+            [showIndicators]="false"
+            [interval]="false"
+            [noWrap]="true"
+            *ngIf="!loadingCarousel">
+                <slide class="text-center m-auto" style="cursor: pointer;" (click)="openModal2(ingredientNested)">
+                    <div style="height: 200px;" class="p-2">
+                        <img [src]="'../../../../assets/img/plus-box.png'" class="img-fluid">
+                    </div>
                     <p>Add new ingredient</p>
                 </slide>
-                <slide *ngFor="let slide of slides; let index=index">
-                    <button type="button" class="mt-2 close pull-right" aria-label="Close" (click)="deleteNewIngredient(index)">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <img [src]="slide.image" alt="image slide" style="display: block; width: 100%; cursor: pointer;">
+                <slide *ngFor="let slide of slides; let index=index" class="text-center m-auto">
+                    <div style="height: 200px;" class="p-2">
+                        <button type="button" class="mt-2 close pull-right" aria-label="Close" (click)="deleteNewIngredient(index)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <img [src]="slide.image" class="img-fluid">
+                    </div>
                     <p>{{slide.title}}</p>
                 </slide>
             </carousel>
+            <div class="loader-container" *ngIf="loadingCarousel">
+                <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">  
+                    <p style="color: white">Please Wait. </p>  
+                </ngx-spinner> 
+            </div>
             <div class="container" [ngStyle]="{'marginTop': '20px'}">
                 <button class="btn btn-success btn-block" [disabled]="newFoodForm.invalid">Submit</button>
             </div>
@@ -115,7 +144,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="newIngredientForm" (ngSubmit)="addIngredient()">
+        <form [formGroup]="newIngredientForm" (ngSubmit)="addNewIngredient()">
             <div class="row p-2 justify-content-center">
                 <img class="img-fluid mx-auto d-block rounded" [src]="newIngredient ? newIngredient.imageURL : '../../../../assets/img/noimage.jpg'">
                 <p *ngIf="newIngredient">{{newIngredient.description}}</p>
@@ -124,7 +153,7 @@
                 <label>Ingredient</label>
                 <select class="form-control" name="ingredientId" formControlName="ingredientId" [ngClass]="{'is-invalid': newIngredientForm.controls.ingredientId.status === 'INVALID' && newIngredientForm.controls.ingredientId.touched }">
                     <option selected="true" disabled="true" [value]="null">Select a ingredient</option>
-                    <option *ngFor="let ingredient of ingredients" [value]="ingredient.ingredientID">{{ingredient.name}}</option>
+                    <option *ngFor="let ingredient of ingredients" [value]="+ingredient.IngredientID">{{ingredient.name}}</option>
                 </select>
             </div>
             <div class="form-row">

@@ -40,7 +40,7 @@ export class CategoryService {
     if(!token){
       return null;
     }
-    return this.http.post<Category>(environment.api+'/menu/categories?access_token='+token, category).toPromise();
+    return this.http.post<Category>(environment.api+'/menu/categories?access_token='+encodeURIComponent(token), category).toPromise();
   }
   
   updateCategory(category: Category): Promise<Category>{
@@ -48,7 +48,7 @@ export class CategoryService {
     if(!token){
       return null;
     }
-    return this.http.put<Category>(environment.api+'/menu/categories/'+category.categoryId+'?access_token='+token, category).toPromise();
+    return this.http.put<Category>(environment.api+'/menu/categories/'+category.categoryId+'?access_token='+encodeURIComponent(token), category).toPromise();
   }
 
   deletecategory(id:String): Promise<any>{
@@ -56,6 +56,6 @@ export class CategoryService {
     if(!token){
       return null;
     }
-    return this.http.delete(environment.api+'/menu/categories/'+id+'?access_token='+token).toPromise();
+    return this.http.delete(environment.api+'/menu/categories/'+id+'?access_token='+encodeURIComponent(token)).toPromise();
   }
 }

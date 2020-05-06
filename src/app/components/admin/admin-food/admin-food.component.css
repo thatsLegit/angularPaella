@@ -23,3 +23,8 @@ table tbody tr td{
 #title{
     padding-top:9px;
 }
+
+.loader-container{
+    position: relative;
+    min-height: 400px;
+}

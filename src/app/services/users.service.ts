@@ -29,16 +29,16 @@ export class UsersService {
   }
   
   update(user: User): Promise<User>{
-    return this.http.put<User>(environment.api+(user.privilege === PrivilegeEnum.ADMIN ? '/admins' : '/customers') + '/'+user.id+'?access_token='+this.token, user).toPromise();
+    return this.http.put<User>(environment.api+(user.privilege === PrivilegeEnum.ADMIN ? '/admins' : '/customers') + '/'+user.id+'?access_token='+encodeURIComponent(this.token), user).toPromise();
   }
   
   async delete(userId: number){
     try {
-      const response = await this.http.delete(environment.api+'/customers'+ '/'+userId+'?access_token='+this.token).toPromise();
+      const response = await this.http.delete(environment.api+'/customers'+ '/'+userId+'?access_token='+encodeURIComponent(this.token)).toPromise();
       return response;
     } catch(e) {
       try { 
-        const response = await this.http.delete(environment.api+'/admins'+ '/'+userId+'?access_token='+this.token).toPromise();
+        const response = await this.http.delete(environment.api+'/admins'+ '/'+userId+'?access_token='+encodeURIComponent(this.token)).toPromise();
         return response;
       } catch(e2){
         throw e2;
@@ -49,9 +49,9 @@ export class UsersService {
   async login(email: string, password: string): Promise<User>{
     try{
       const tokenResponse: TokenResponse = await this.http.post<TokenResponse>(
-        environment.api+'/oauth/token?grant_type='+encodeURI('password')+
-        '&password='+encodeURI(password)+
-        '&username='+encodeURI(email), 
+        environment.api+'/oauth/token?grant_type='+encodeURIComponent('password')+
+        '&password='+encodeURIComponent(password)+
+        '&username='+encodeURIComponent(email), 
         null, {
           headers: {
             'Authorization': 'Basic '+btoa(environment.username+':'+environment.password),
@@ -67,14 +67,14 @@ export class UsersService {
     }
 
     try {
-      this.user = (await this.http.get<User>(environment.api+'/customers?email='+encodeURI(email)+'&access_token='+encodeURI(this.token)).toPromise())[0];
+      this.user = (await this.http.get<User>(environment.api+'/customers?email='+encodeURIComponent(email)+'&access_token='+encodeURIComponent(this.token)).toPromise())[0];
       delete this.user.password;
       localStorage.setItem('user', JSON.stringify(this.user));
       localStorage.setItem('token', this.token);
       this.user$.next(this.user);
     } catch(e) {
       try { 
-        this.user = (await this.http.get<User>(environment.api+'/admins?email='+encodeURI(email)+'&access_token='+encodeURI(this.token)).toPromise())[0];
+        this.user = (await this.http.get<User>(environment.api+'/admins?email='+encodeURIComponent(email)+'&access_token='+encodeURIComponent(this.token)).toPromise())[0];
         delete this.user.password;
         localStorage.setItem('user', JSON.stringify(this.user));
         localStorage.setItem('token', this.token);

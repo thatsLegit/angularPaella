@@ -35,12 +35,12 @@ export class IngredientsService {
       }
     
       createIngredient(ingredient: Ingredient): Promise<Ingredient>{
-        ingredient.ingredientID = null;
+        ingredient.IngredientID = null;
         const token = this.userService.token;
         if(!token){
           return null;
         }
-        return this.http.post<Ingredient>(environment.api+'/ingredients?access_token='+token, ingredient).toPromise();
+        return this.http.post<Ingredient>(environment.api+'/ingredients?access_token='+encodeURIComponent(token), ingredient).toPromise();
       }
       
       updateIngredient(ingredient: Ingredient): Promise<Ingredient>{
@@ -48,7 +48,7 @@ export class IngredientsService {
         if(!token){
           return null;
         }
-        return this.http.put<Ingredient>(environment.api+'/ingredients/'+ingredient.ingredientID+'?access_token='+token, ingredient).toPromise();
+        return this.http.put<Ingredient>(environment.api+'/ingredients/'+ingredient.IngredientID+'?access_token='+encodeURIComponent(token), ingredient).toPromise();
       }
     
       deleteIngredient(id:String): Promise<any>{
@@ -56,7 +56,7 @@ export class IngredientsService {
         if(!token){
           return null;
         }
-        return this.http.delete(environment.api+'/ingredients/'+id+'?access_token='+token).toPromise();
+        return this.http.delete(environment.api+'/ingredients/'+id+'?access_token='+encodeURIComponent(token)).toPromise();
       }
   
 }

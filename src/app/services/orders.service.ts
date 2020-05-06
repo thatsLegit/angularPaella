@@ -67,7 +67,7 @@ export class OrdersService {
     if(!token){
       return null;
     }
-    return this.http.post<Order>(environment.api+'/orders?access_token='+token, order).toPromise();
+    return this.http.post<Order>(environment.api+'/orders?access_token='+encodeURIComponent(token), order).toPromise();
   }
   
   updateOrder(order: Order): Promise<Order>{
@@ -75,7 +75,7 @@ export class OrdersService {
     if(!token){
       return null;
     }
-    return this.http.put<Order>(environment.api+'/orders/'+order.id+'?access_token='+token, order).toPromise();
+    return this.http.put<Order>(environment.api+'/orders/'+order.id+'?access_token='+encodeURIComponent(token), order).toPromise();
   }
 
   deleteOrder(id:String): Promise<any>{
@@ -83,7 +83,7 @@ export class OrdersService {
     if(!token){
       return null;
     }
-    return this.http.delete(environment.api+'/orders/'+id+'?access_token='+token).toPromise();
+    return this.http.delete(environment.api+'/orders/'+id+'?access_token='+encodeURIComponent(token)).toPromise();
   }
   
 

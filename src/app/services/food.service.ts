@@ -36,6 +36,19 @@ export class FoodService {
       }
     }
 
+    const token = this.userService.token;
+
+
+    if(token){
+      if(!modified){
+        modified = true;
+        url += '?access_token='+encodeURIComponent(token);
+      } else {
+        url += '&access_token='+encodeURIComponent(token);
+      }
+    }
+
+
     return this.http.get<Array<Food>>(url).toPromise();
   }
 
@@ -57,7 +70,7 @@ export class FoodService {
     if(!token){
       return null;
     }
-    return this.http.post<Food>(environment.api+'/menu/food?access_token='+token, food).toPromise();
+    return this.http.post<Food>(environment.api+'/menu/food?access_token='+encodeURIComponent(token), food).toPromise();
   }
   
   updateFood(food: FoodAndIngredients): Promise<Food>{
@@ -65,7 +78,7 @@ export class FoodService {
     if(!token){
       return null;
     }
-    return this.http.put<Food>(environment.api+'/menu/food/'+food.food.foodId+'?access_token='+token, food).toPromise();
+    return this.http.put<Food>(environment.api+'/menu/food/'+food.food.foodId+'?access_token='+encodeURIComponent(token), food).toPromise();
   }
 
   deleteFood(id:String): Promise<any>{
@@ -73,6 +86,6 @@ export class FoodService {
     if(!token){
       return null;
     }
-    return this.http.delete(environment.api+'/menu/food/'+id+'?access_token='+token).toPromise();
+    return this.http.delete(environment.api+'/menu/food/'+id+'?access_token='+encodeURIComponent(token)).toPromise();
   }
 }

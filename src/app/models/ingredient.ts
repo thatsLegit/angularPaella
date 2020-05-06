@@ -1,5 +1,5 @@
 export interface Ingredient{
-    ingredientID: number;
+    IngredientID: number;
     name: string;
     description: string;
     imageURL: string;
