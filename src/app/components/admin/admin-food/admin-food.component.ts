@@ -10,6 +10,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { IngredientFood } from 'src/app/models/IngredientFood';
 import { FoodAndIngredients } from 'src/app/models/FoodAndIngredients';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { FoodIngredientService } from 'src/app/services/food-ingredient.service';
 
 @Component({
   selector: 'app-admin-food',
@@ -31,8 +32,10 @@ export class AdminFoodComponent implements OnInit {
   singleSlideOffset = false;
   loadingCarousel: boolean = false;
   slides: Array<{image: string, title: string, ingredientFood: IngredientFood}>;
+  slidesEdit: Array<{image: string, title: string, ingredientFood: IngredientFood}>;
 
   newFoodForm: FormGroup;
+  editFoodForm: FormGroup;
   newIngredientForm: FormGroup;
 
   newIngredient: Ingredient;
@@ -42,9 +45,13 @@ export class AdminFoodComponent implements OnInit {
   numberOfItems: number;
 
   loading: boolean;
+  foodToEdit: Food;
 
 
-  constructor(private foodService: FoodService, private ingredientsService:IngredientsService, private categoryService: CategoryService, private modalService: BsModalService, private formBuilder: FormBuilder,private spinnerService: NgxSpinnerService) { 
+  constructor(private foodService: FoodService, private ingredientsService:IngredientsService, 
+    private categoryService: CategoryService, private modalService: BsModalService, 
+    private formBuilder: FormBuilder,private spinnerService: NgxSpinnerService,
+    private ifService: FoodIngredientService) { 
     
     
   }
@@ -54,7 +61,9 @@ export class AdminFoodComponent implements OnInit {
     this.spinnerService.show();
     this.createForms();
     this.slides = [];
+    this.slidesEdit = [];
     this.newIngredient = null;
+    this.foodToEdit = null;
     this.foods = await this.foodService.getFood();
     this.currentPage = 1;
     this.paginationLength = 10;
@@ -71,7 +80,17 @@ export class AdminFoodComponent implements OnInit {
     this.newFoodForm = this.formBuilder.group({
       name: [null, Validators.required],
       description: [null, Validators.required],
-      price: [null, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.min(0)]],
+      price: [null, [Validators.required, Validators.pattern("^[0-9]{0,9}([.][0-9]{0,9})?$"), Validators.min(0)]],
+      active: [false],
+      isDishOfDay: [false],
+      imageURL: [null, Validators.required],
+      categoryId: [null, Validators.required]
+    });
+    
+    this.editFoodForm = this.formBuilder.group({
+      name: [null, Validators.required],
+      description: [null, Validators.required],
+      price: [null, [Validators.required, Validators.pattern("^[0-9]{0,9}([.][0-9]{0,9})?$"), Validators.min(0)]],
       active: [false],
       isDishOfDay: [false],
       imageURL: [null, Validators.required],
@@ -80,7 +99,7 @@ export class AdminFoodComponent implements OnInit {
     
     this.newIngredientForm = this.formBuilder.group({
       ingredientId: [null, Validators.required],
-      quantity: [null, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.min(0)]],
+      quantity: [null, [Validators.required, Validators.pattern("^[0-9]{0,9}([.][0-9]{0,9})?$"), Validators.min(0)]],
       unit: [null, Validators.required]
     });
 
@@ -104,16 +123,45 @@ export class AdminFoodComponent implements OnInit {
     for(let ingredient of this.slides){
       sendable.ingredientFoods.push(ingredient.ingredientFood);
     }
-
-    console.log(sendable);
     
 
     try{
       const answer = await this.foodService.createFood(sendable);
+      if(this.modalRef2){
+        this.modalRef2.hide();
+      }
       this.modalRef.hide();
-      this.modalRef2.hide();
       this.ngOnInit();
     } catch(e) {
+      alert(e.error.error_description);
+    }
+  }
+
+  async editFood(){
+
+    const sendable: FoodAndIngredients = {
+      food: {
+        ...this.editFoodForm.value,
+        categoryId: +this.editFoodForm.value.categoryId,
+        foodId: this.foodToEdit.foodId
+      },
+      ingredientFoods: []
+    };
+
+    for(let ingredient of this.slidesEdit){
+      sendable.ingredientFoods.push(ingredient.ingredientFood);
+    }
+    
+
+    try{
+      const answer = await this.foodService.updateFood(sendable);
+      if(this.modalRef2){
+        this.modalRef2.hide();
+      }
+      this.modalRef.hide();
+      this.ngOnInit();
+    } catch(e) {
+      console.log(e);
       alert(e.error.error_description);
     }
   }
@@ -133,6 +181,32 @@ export class AdminFoodComponent implements OnInit {
     });
   }
   
+  async openModalEdit(template: TemplateRef<any>, id: number) {
+    this.slidesEdit = [];
+    this.foodToEdit = this.foodsDisplayed.find((food) => food.foodId === id);
+    this.editFoodForm.setValue({
+      name: this.foodToEdit.name,
+      description: this.foodToEdit.description,
+      price: this.foodToEdit.price,
+      active: this.foodToEdit.active,
+      isDishOfDay: this.foodToEdit.isDishOfDay,
+      imageURL: this.foodToEdit.imageURL,
+      categoryId: this.foodToEdit.categoryId
+    });
+    const relationships = await this.ifService.getByFoodId(id);
+    for(let ingF of relationships){
+      const ing = this.ingredients.find((ing) => ing.IngredientID === ingF.ingredientId);
+      this.slidesEdit.push({
+        image: ing.imageURL,
+        ingredientFood: ingF,
+        title: ing.name + ': '+ingF.quantity+' '+ingF.unit
+      });
+    }
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-lg food-modal-container'
+    });
+  }
+  
   openModal2(template: TemplateRef<any>) {
     this.modalRef2 = this.modalService.show(template, {
       class: 'second',
@@ -144,7 +218,7 @@ export class AdminFoodComponent implements OnInit {
   addNewIngredient(){
     this.slides.push({
       image: this.newIngredient.imageURL,
-      title: this.newIngredient.name,
+      title: this.newIngredient.name +': '+this.newIngredientForm.value.quantity + ' '+this.newIngredientForm.value.unit,
       ingredientFood: {
         ...this.newIngredientForm.value,
         foodId: null,
@@ -152,12 +226,34 @@ export class AdminFoodComponent implements OnInit {
         ingredientId: +this.newIngredientForm.value.ingredientId,
       }
     });
+    this.newIngredientForm.reset();
     this.modalRef2.hide();
   }
 
   deleteNewIngredient(index: number){
     this.loadingCarousel = true;
     this.slides.splice(index, 1);
+    setTimeout(() => {this.loadingCarousel = false}, 500);
+  }
+  
+  editAddNewIngredient(){
+    this.slidesEdit.push({
+      image: this.newIngredient.imageURL,
+      title: this.newIngredient.name +': '+this.newIngredientForm.value.quantity + ' '+this.newIngredientForm.value.unit,
+      ingredientFood: {
+        ...this.newIngredientForm.value,
+        foodId: this.foodToEdit.foodId,
+        id: null,
+        ingredientId: +this.newIngredientForm.value.ingredientId,
+      }
+    });
+    this.newIngredientForm.reset();
+    this.modalRef2.hide();
+  }
+
+  editDeleteNewIngredient(index: number){
+    this.loadingCarousel = true;
+    this.slidesEdit.splice(index, 1);
     setTimeout(() => {this.loadingCarousel = false}, 500);
   }
 

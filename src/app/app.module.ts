@@ -34,6 +34,7 @@ import { AdminNavbarComponent } from './components/admin/admin-navbar/admin-navb
 import { CommonComponent } from './components/common/common.component';
 import { CategoryService } from './services/category.service';
 import { AdminGuard } from './guards/admin.guard';
+import { FoodIngredientService } from './services/food-ingredient.service';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,7 @@ import { AdminGuard } from './guards/admin.guard';
     PaginationModule.forRoot(),
     BsDropdownModule.forRoot()
   ],
-  providers: [FoodService, UsersService, OrdersService, IngredientsService, CategoryService, AdminGuard],
+  providers: [FoodService, UsersService, OrdersService, IngredientsService, CategoryService, FoodIngredientService, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

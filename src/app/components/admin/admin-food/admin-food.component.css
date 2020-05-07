@@ -6,7 +6,15 @@ table tbody tr{
     font-weight: bold;
 }
 table tbody tr td{
-    padding: 50px;
+    vertical-align: middle;
+}
+
+.img-cell{
+    width: 20vw;
+}
+.action-container {
+    display: flex;
+    justify-content: center;
 }
 #button{
     margin-top:20px;

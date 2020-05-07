@@ -7,25 +7,32 @@
             <table class="table table-striped table-light table-hover">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Price</th>
+                        <th></th>
+                        <th class="text-center">Product</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let food of foodsDisplayed" class="table-warning">
-                        <th scope="row"><img class="img-fluid" src="{{ food.imageURL }}"/></th>
-                        <td>{{ food.name }}</td>
-                        <td>{{ food.price }}€</td>
-                        <td><button (click)="onDelete(food.foodId);" class="btn btn-lg btn-danger">Delete</button></td>
+                        <td class="img-cell"><img class="img-fluid rounded" src="{{ food.imageURL }}"/></td>
+                        <td class="text-center">{{ food.name }}</td>
+                        <td class="text-center">{{ food.price }}€</td>
+                        <td>
+                            <div class="action-container">
+                                <button (click)="openModalEdit(editFoodModal, food.foodId)" class="btn" and style="background-color:transparent" ><i class="fas fa-edit"></i></button>
+                                <button (click)="onDelete(food.foodId);" class="btn" and style="background-color:transparent" ><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </td>
                     </tr>
                     <tr>
-                        <td align="center" colspan="3">
+                        <td align="center" colspan="4">
                             <button (click)="openModal(addFoodModal)" class="btn btn-lg btn-success" id="button">Add food</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center" *ngIf="foods.length > paginationLength">
                 <pagination
                     [totalItems]="numberOfItems"
                     [(ngModel)]="currentPage"
@@ -135,6 +142,95 @@
     </div>
 </ng-template>
 
+<ng-template #editFoodModal>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Edit food</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editFoodForm" (ngSubmit)="editFood()">
+            <div class="row p-2">
+                <img class="img-fluid mx-auto d-block rounded" [src]="editFoodForm.controls.imageURL.value ? editFoodForm.controls.imageURL.value : '../../../../assets/img/noimage.jpg'">
+            </div>
+            <div class="form-row form-group">
+                <label>Image URL</label>
+                <input class="form-control" name="imageURL" formControlName="imageURL" [ngClass]="{'is-invalid': editFoodForm.controls.imageURL.status === 'INVALID' && editFoodForm.controls.imageURL.touched }">
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <label>Name</label>
+                    <input class="form-control" name="name" formControlName="name" [ngClass]="{'is-invalid': editFoodForm.controls.name.status === 'INVALID' && editFoodForm.controls.name.touched }">
+                </div>
+                <div class="col-md-6">
+                    <label>Price</label>
+                    <input class="form-control" type="number" name="price" formControlName="price" [ngClass]="{'is-invalid': editFoodForm.controls.price.status === 'INVALID' && editFoodForm.controls.price.touched }">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <label>Category</label>
+                    <select class="form-control" name="categoryId" formControlName="categoryId" [ngClass]="{'is-invalid': editFoodForm.controls.categoryId.status === 'INVALID' && editFoodForm.controls.categoryId.touched }">
+                        <option selected="true" disabled="true" [value]="null">Select a category</option>
+                        <option *ngFor="let category of categories" [value]="+category.categoryId">{{category.name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center align-items-end">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="isDishOfDay" formControlName="isDishOfDay">
+                        <label class="form-check-input">Dish of the day</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="active" formControlName="active">
+                        <label class="form-check-input">Active</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group w-100">
+                    <label>Description</label>
+                    <textarea class="form-control" name="description" formControlName="description" [ngClass]="{'is-invalid': editFoodForm.controls.description.status === 'INVALID' && editFoodForm.controls.description.touched }"></textarea>
+                </div>
+            </div>
+        
+            <div class="row justify-content-center">
+                <h4>Ingredients</h4>
+            </div>
+            <carousel [itemsPerSlide]="itemsPerSlide"
+            [singleSlideOffset]="true"
+            [showIndicators]="false"
+            [interval]="false"
+            [noWrap]="true"
+            *ngIf="!loadingCarousel">
+                <slide class="text-center m-auto" style="cursor: pointer;" (click)="openModal2(ingredientNestedEdit)">
+                    <div style="height: 200px;" class="p-2">
+                        <img [src]="'../../../../assets/img/plus-box.png'" class="img-fluid">
+                    </div>
+                    <p>Add new ingredient</p>
+                </slide>
+                <slide *ngFor="let slide of slidesEdit; let index=index" class="text-center m-auto">
+                    <div style="height: 200px;" class="p-2">
+                        <button type="button" class="mt-2 close pull-right" aria-label="Close" (click)="editDeleteNewIngredient(index)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <img [src]="slide.image" class="img-fluid">
+                    </div>
+                    <p>{{slide.title}}</p>
+                </slide>
+            </carousel>
+            <div class="loader-container" *ngIf="loadingCarousel">
+                <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">  
+                    <p style="color: white">Please Wait. </p>  
+                </ngx-spinner> 
+            </div>
+            <div class="container" [ngStyle]="{'marginTop': '20px'}">
+                <button class="btn btn-success btn-block" [disabled]="editFoodForm.invalid">Submit</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
   
 <ng-template #ingredientNested>
     <div class="modal-header">
@@ -145,6 +241,43 @@
     </div>
     <div class="modal-body">
         <form [formGroup]="newIngredientForm" (ngSubmit)="addNewIngredient()">
+            <div class="row p-2 justify-content-center">
+                <img class="img-fluid mx-auto d-block rounded" [src]="newIngredient ? newIngredient.imageURL : '../../../../assets/img/noimage.jpg'">
+                <p *ngIf="newIngredient">{{newIngredient.description}}</p>
+            </div>
+            <div class="form-row form-group">
+                <label>Ingredient</label>
+                <select class="form-control" name="ingredientId" formControlName="ingredientId" [ngClass]="{'is-invalid': newIngredientForm.controls.ingredientId.status === 'INVALID' && newIngredientForm.controls.ingredientId.touched }">
+                    <option selected="true" disabled="true" [value]="null">Select a ingredient</option>
+                    <option *ngFor="let ingredient of ingredients" [value]="+ingredient.IngredientID">{{ingredient.name}}</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <label>Unit</label>
+                    <input class="form-control" name="unit" formControlName="unit" [ngClass]="{'is-invalid': newIngredientForm.controls.unit.status === 'INVALID' && newIngredientForm.controls.unit.touched }">
+                </div>
+                <div class="col-md-6">
+                    <label>Quantity</label>
+                    <input class="form-control" type="number" name="quantity" formControlName="quantity" [ngClass]="{'is-invalid': newIngredientForm.controls.quantity.status === 'INVALID' && newIngredientForm.controls.quantity.touched }">
+                </div>
+            </div>
+            <div class="container" [ngStyle]="{'marginTop': '20px'}">
+                <button class="btn btn-success btn-block" [disabled]="newIngredientForm.invalid">Submit</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #ingredientNestedEdit>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Ingredient</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="newIngredientForm" (ngSubmit)="editAddNewIngredient()">
             <div class="row p-2 justify-content-center">
                 <img class="img-fluid mx-auto d-block rounded" [src]="newIngredient ? newIngredient.imageURL : '../../../../assets/img/noimage.jpg'">
                 <p *ngIf="newIngredient">{{newIngredient.description}}</p>
