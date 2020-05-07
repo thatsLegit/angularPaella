@@ -21,10 +21,6 @@ import { TopLayerComponent } from './components/common/top-layer/top-layer.compo
 import { HomeComponent } from './components/common/home/home.component';
 import { FoodComponent } from './components/common/food/food.component';
 import { FoodItemComponent } from './components/common/food-item/food-item.component';
-import { DrinksComponent } from './components/common/drinks/drinks.component';
-import { DrinksItemComponent } from './components/common/drinks-item/drinks-item.component';
-import { DessertsComponent } from './components/common/desserts/desserts.component';
-import { DessertsItemComponent } from './components/common/desserts-item/desserts-item.component';
 import { AdminFoodComponent } from './components/admin/admin-food/admin-food.component';
 import { LoginComponent } from './components/common/login/login.component';
 import { OrdersComponent } from './components/common/orders/orders.component';
@@ -44,10 +40,6 @@ import { FoodIngredientService } from './services/food-ingredient.service';
     HomeComponent,
     FoodComponent,
     FoodItemComponent,
-    DrinksComponent,
-    DrinksItemComponent,
-    DessertsComponent,
-    DessertsItemComponent,
     LoginComponent,
     OrdersComponent,
     AdminFoodComponent,

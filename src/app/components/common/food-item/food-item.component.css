@@ -1,40 +1,33 @@
-#food {
+.food {
     margin: 30px;
-    width: auto;
-    height: auto;
+    padding: 20px;
+    width: 100%;
+    height: calc(100% - 30px);
     background-color: rgba(177, 144, 33, 0.673);
     color: black;
     text-align: center;
     border-radius: 5px;
     border: solid black 1.5px;
+    display: flex;
+    flex-flow: column nowrap;
 }
-#food-image{
-    width: 150px;
-    height: 150px;
+.img-container {
+    height: 15vh;
 }
-#food h5{
+.img-container > img {
+    max-height: 15vh;
+}
+.food h5{
     padding:auto;
 }
-#food p{
+.food p{
     padding:auto;
 }
-.available {
-    padding:auto;
-    width: 80px;
-    height: 40px;
-    font-size: .75rem;
-    border-radius: 5px;
+.price-container{
+    margin-top: auto;
 }
-.available:hover {
-    background-color:#86cd23;
-    transition: 0.5s;
-}
-.unavailable{
-    color:black;
-    background-color: red;
-    padding:auto;
-    width: 80px;
-    height: 40px;
-    font-size: .75rem;
-    border-radius: 5px;
+.action-container{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: auto;
 }

@@ -1,5 +1,18 @@
 <div class="row">
-    <app-food-item *ngFor="let f of food" [food]="f">
-    </app-food-item>
+    <div class="col-md-4" *ngFor="let f of foodDisplayed">
+        <app-food-item [food]="f">
+        </app-food-item>
+    </div>
+    <div class="mt-3 w-100 row justify-content-center" *ngIf="food.length > paginationLength">
+        <pagination
+            [totalItems]="numberOfItems"
+            [(ngModel)]="currentPage"
+            [ngModelOptions]="{standalone: true}"
+            (pageChanged)="pageChanged($event)"
+            [itemsPerPage]="paginationLength"
+            [maxSize]="10"
+            [boundaryLinks]="true"
+        ></pagination>
+    </div>
 </div>
 

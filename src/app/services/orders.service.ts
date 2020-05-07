@@ -3,11 +3,21 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { UsersService } from './users.service';
+import { FoodOrder } from '../models/FoodOrder';
 
 @Injectable()
 export class OrdersService {
 
-  constructor(private http: HttpClient, private userService: UsersService) { }
+  cart: Array<FoodOrder>;
+
+  constructor(private http: HttpClient, private userService: UsersService) { 
+    const storage = JSON.parse(localStorage.getItem('cart'));
+    if(storage){
+      this.cart = storage;
+    } else {
+      this.cart = [];
+    }
+  }
 
   getOrders(clientLastName?: string, clientName?: string, email?: string, foodName?: string, status?: StatusEnum):Promise<Array<Order>>{
     let url = environment.api+'/orders';
@@ -84,6 +94,17 @@ export class OrdersService {
       return null;
     }
     return this.http.delete(environment.api+'/orders/'+id+'?access_token='+encodeURIComponent(token)).toPromise();
+  }
+
+  addToCart(foodOrder: FoodOrder){
+    this.cart.push(foodOrder);
+
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+  }
+
+  cleanCart() {
+    this.cart = [];
+    localStorage.removeItem('cart');
   }
   
 

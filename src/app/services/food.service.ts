@@ -10,7 +10,7 @@ export class FoodService {
 
   constructor(private http: HttpClient, private userService: UsersService) { }
 
-  getFood(categoryId?: number, description?: string, name?: string):Promise<Array<Food>>{
+  getFood(categoryId?: number, description?: string, name?: string, forceNormal?: boolean):Promise<Array<Food>>{
     let url = environment.api+'/menu/food';
     let modified = false;
     if(categoryId){
@@ -39,7 +39,7 @@ export class FoodService {
     const token = this.userService.token;
 
 
-    if(token){
+    if(token && !forceNormal){
       if(!modified){
         modified = true;
         url += '?access_token='+encodeURIComponent(token);
