@@ -1,6 +1,10 @@
 import { OrdersService } from '../../../services/orders.service';
 import { Order } from '../../../models/order';
 import { Component, OnInit } from '@angular/core';
+import { FoodOrder } from 'src/app/models/FoodOrder';
+import { FoodOrderService } from 'src/app/services/food-order.service';
+import { FoodService } from 'src/app/services/food.service';
+import { Food } from 'src/app/models/food';
 
 @Component({
   selector: 'app-orders',
@@ -8,26 +12,39 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-  orders: Array<Order>;
+  orders: Array<FoodOrder>;
+  polishedOrders: Array<{
+    food: Food,
+    foodOrder: FoodOrder
+  }>;
 
-  constructor(private ordersService: OrdersService) {
-    // this.ordersService.orders$.subscribe(orders => this.orders = orders);
+  loading: boolean;
+
+  constructor(private ordersService: OrdersService, private foodOrderService: FoodOrderService, private foodService: FoodService) { }
+
+  async ngOnInit() {
+    this.loading = true;
+    this.orders = this.ordersService.getCart();
+    this.polishedOrders = [];
+    for(let i = 0; i < this.orders.length; i++){
+      this.polishedOrders.push({
+        food: await this.foodService.getFoodById(this.orders[i].foodId),
+        foodOrder: this.orders[i]
+      });
+    }
+    this.loading = false;
   }
 
-  ngOnInit() {
-    // this.ordersService.orders$.subscribe(orders => this.orders = orders);
+  onDelete(index: number) {
+    this.ordersService.removeFromCart(index);
+    this.ngOnInit();
   }
 
-  onDelete(id: String) {
-    // this.ordersService.deleteOrder(id);
-  }
-
-  onUpdate(id: String, sign: String) {
-    // this.ordersService.updateOrders(id, sign);
-  }
-
-  updateNumberCount(quantity: number) {
-    // this.ordersService.SubstractNumOrders(quantity);
+  onUpdate(index: number, sign: String) {
+    this.loading = true;
+    this.orders[index].quantity = sign === 'plus' ? (this.orders[index].quantity + 1) :  (this.orders[index].quantity - 1);
+    this.ordersService.updateCart(this.orders, index);
+    this.ngOnInit();
   }
 
 }

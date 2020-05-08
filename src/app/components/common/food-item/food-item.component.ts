@@ -35,7 +35,7 @@ export class FoodItemComponent implements OnInit {
   async ngOnInit() {
     this.loading = true;
     this.buildForm();
-    const ifLinks = await this.ifService.getByFoodId(this.food.foodId);
+    const ifLinks = await this.ifService.getIngredientFood(this.food.foodId);
     
     this.slides = [];
     for(let ifLink of ifLinks){

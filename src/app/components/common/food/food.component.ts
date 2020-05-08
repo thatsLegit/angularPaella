@@ -15,16 +15,20 @@ export class FoodComponent implements OnInit {
   paginationLength: number;
   numberOfItems: number;
 
+  loading: boolean;
+
   constructor(private foodService:FoodService) { 
 
   }
 
   async ngOnInit() {
+    this.loading = true;
     this.food = await this.foodService.getFood(null, null, null, true);
     this.currentPage = 1;
     this.paginationLength = 9;
     this.numberOfItems = this.food.length;
     this.foodDisplayed = this.food.slice((this.currentPage - 1) * this.paginationLength, ((this.currentPage - 1) * this.paginationLength) + this.paginationLength);
+    this.loading = false;
   }
 
   pageChanged(event){

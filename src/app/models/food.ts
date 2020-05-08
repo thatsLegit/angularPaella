@@ -1,5 +1,5 @@
 export interface Food{
-    foodId: number;
+    foodId?: number;
     categoryId: number;
     name: string;
     description: string;

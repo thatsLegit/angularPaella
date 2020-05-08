@@ -193,7 +193,7 @@ export class AdminFoodComponent implements OnInit {
       imageURL: this.foodToEdit.imageURL,
       categoryId: this.foodToEdit.categoryId
     });
-    const relationships = await this.ifService.getByFoodId(id);
+    const relationships = await this.ifService.getIngredientFood(id);
     for(let ingF of relationships){
       const ing = this.ingredients.find((ing) => ing.IngredientID === ingF.ingredientId);
       this.slidesEdit.push({

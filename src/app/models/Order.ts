@@ -1,5 +1,5 @@
 export interface Order{
-    id: number;
+    id?: number;
     userID: number;
     status: StatusEnum;
     creation_date: Date;
@@ -8,7 +8,7 @@ export interface Order{
 }
 
 export enum StatusEnum {
-    DELIVERED = "Delivered",
-    UNDELIVERED = "Undelivered",
-    INCART = "In_cart"
+    DELIVERED = "DELIVERED",
+    UNDELIVERED = "UNDELIVERED",
+    INCART = "INCART"
 }

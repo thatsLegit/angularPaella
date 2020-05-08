@@ -1,5 +1,5 @@
 export interface FoodOrder {
-    id: number;
+    id?: number;
     foodId: number;
     orderId: number;
     quantity: number;

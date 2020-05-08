@@ -94,6 +94,7 @@ export class UsersService {
     this.user = null;
     this.token = null;
     localStorage.clear();
+    window.location.reload();
   }
 
 }

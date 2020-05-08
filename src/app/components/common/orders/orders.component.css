@@ -16,3 +16,11 @@ table tbody tr td{
     text-align:center;
     font-weight: bold;
 }
+
+.quantityBtn{
+    padding: 5px;
+}
+
+.img-cell{
+    width: 20vw;
+}
