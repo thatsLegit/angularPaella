@@ -17,13 +17,16 @@ export class OrdersComponent implements OnInit {
     food: Food,
     foodOrder: FoodOrder
   }>;
+  order: Order;
 
   loading: boolean;
+  
 
   constructor(private ordersService: OrdersService, private foodOrderService: FoodOrderService, private foodService: FoodService) { }
 
   async ngOnInit() {
     this.loading = true;
+    this.order = null;
     this.orders = this.ordersService.getCart();
     this.polishedOrders = [];
     for(let i = 0; i < this.orders.length; i++){
@@ -32,18 +35,21 @@ export class OrdersComponent implements OnInit {
         foodOrder: this.orders[i]
       });
     }
+    if(this.orders.length && this.orders[0].orderId){
+      this.order = await this.ordersService.getOrderById(this.orders[0].orderId);
+    }
     this.loading = false;
   }
 
-  onDelete(index: number) {
-    this.ordersService.removeFromCart(index);
+  async onDelete(index: number) {
+    await this.ordersService.removeFromCart(index);
     this.ngOnInit();
   }
 
-  onUpdate(index: number, sign: String) {
+  async onUpdate(index: number, sign: String) {
     this.loading = true;
     this.orders[index].quantity = sign === 'plus' ? (this.orders[index].quantity + 1) :  (this.orders[index].quantity - 1);
-    this.ordersService.updateCart(this.orders, index);
+    await this.ordersService.updateCart(this.orders, index);
     this.ngOnInit();
   }
 

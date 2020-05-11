@@ -31,6 +31,8 @@ import { CommonComponent } from './components/common/common.component';
 import { CategoryService } from './services/category.service';
 import { AdminGuard } from './guards/admin.guard';
 import { FoodIngredientService } from './services/food-ingredient.service';
+import { PaypalBtnComponent } from './components/common/orders/paypal-btn/paypal-btn.component';
+import { ThankYouComponent } from './components/common/thank-you/thank-you.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { FoodIngredientService } from './services/food-ingredient.service';
     AdminIngredientsComponent,
     AdministrationComponent,
     AdminNavbarComponent,
-    CommonComponent
+    CommonComponent,
+    ThankYouComponent,
+    PaypalBtnComponent
   ],
   imports: [
     BrowserModule,

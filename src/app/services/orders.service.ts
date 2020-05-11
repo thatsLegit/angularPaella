@@ -133,7 +133,11 @@ export class OrdersService {
   }
 
   getOrderById(id: number): Promise<Order> {
-    return this.http.get<Order>(environment.api + '/orders/' + id).toPromise();
+    const token = this.userService.token;
+    if (!token) {
+      return null;
+    }
+    return this.http.get<Order>(environment.api + '/orders/' + id + '?access_token=' + encodeURIComponent(token)).toPromise();
   }
 
   createOrder(order: Order): Promise<Order> {

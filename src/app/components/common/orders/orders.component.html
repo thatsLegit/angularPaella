@@ -36,13 +36,8 @@
             </table>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <div class="float-right">
-                <!-- ngClass: table-responsive if orders not empty, d-none if empty-->
-                <button type="button" class="btn btn-lg btn-success" *ngIf="orders.length">Payement</button>
-            </div>
-        </div>
+    <div class="row justify-content-center" *ngIf="order">
+        <app-paypal [order]="order"></app-paypal>
     </div>
     <div class="row">
         <div class="col">

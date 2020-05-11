@@ -8,7 +8,8 @@ table tbody tr{
     font-weight: bold;
 }
 table tbody tr td{
-    padding: 50px;
+    padding: 30px;
+    vertical-align: middle;
 }
 
 #noOrders{
