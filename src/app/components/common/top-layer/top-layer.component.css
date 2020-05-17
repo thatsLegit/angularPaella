@@ -1,10 +1,26 @@
+#header_container {
+  display: flex;
+  flex: 0 1 auto;
+}
+
+#header_container .item {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+#header_container .item h1 {
+  font-size: 5.5rem;
+  color: white;
+}
+
 .timeline-image{
     width: 200px;
-    height: 200px;
+    padding: 10px;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 #restaurant{
-    margin : 40px 0 0 150px;
     font-family: 'Gloria Hallelujah', cursive;
 }

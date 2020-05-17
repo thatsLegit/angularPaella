@@ -1,9 +1,6 @@
 <div *ngIf="!loading">
-    <div class="banner">
-        <h3 id="title">Food</h3>
-    </div>
-    <div class="row">
-        <div class="table-responsive" id="table">
+    <div >
+        <div id="table">
             <table class="table table-striped table-light table-hover">
                 <thead>
                     <tr>
@@ -43,13 +40,13 @@
                     [boundaryLinks]="true"
                 ></pagination>
             </div>
-        </div>          
+        </div>
     </div>
 </div>
 
 <div *ngIf="loading" class="loader-container">
-    <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">  
-        <p style="color: white">Please Wait. </p>  
+    <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">
+        <p style="color: white">Please Wait. </p>
     </ngx-spinner>
 </div>
 
@@ -104,7 +101,7 @@
                     <textarea class="form-control" name="description" formControlName="description" [ngClass]="{'is-invalid': newFoodForm.controls.description.status === 'INVALID' && newFoodForm.controls.description.touched }"></textarea>
                 </div>
             </div>
-        
+
             <div class="row justify-content-center">
                 <h4>Ingredients</h4>
             </div>
@@ -131,9 +128,9 @@
                 </slide>
             </carousel>
             <div class="loader-container" *ngIf="loadingCarousel">
-                <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">  
-                    <p style="color: white">Please Wait. </p>  
-                </ngx-spinner> 
+                <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">
+                    <p style="color: white">Please Wait. </p>
+                </ngx-spinner>
             </div>
             <div class="container" [ngStyle]="{'marginTop': '20px'}">
                 <button class="btn btn-success btn-block" [disabled]="newFoodForm.invalid">Submit</button>
@@ -193,7 +190,7 @@
                     <textarea class="form-control" name="description" formControlName="description" [ngClass]="{'is-invalid': editFoodForm.controls.description.status === 'INVALID' && editFoodForm.controls.description.touched }"></textarea>
                 </div>
             </div>
-        
+
             <div class="row justify-content-center">
                 <h4>Ingredients</h4>
             </div>
@@ -220,9 +217,9 @@
                 </slide>
             </carousel>
             <div class="loader-container" *ngIf="loadingCarousel">
-                <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">  
-                    <p style="color: white">Please Wait. </p>  
-                </ngx-spinner> 
+                <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise" [fullScreen]="false">
+                    <p style="color: white">Please Wait. </p>
+                </ngx-spinner>
             </div>
             <div class="container" [ngStyle]="{'marginTop': '20px'}">
                 <button class="btn btn-success btn-block" [disabled]="editFoodForm.invalid">Submit</button>
@@ -231,7 +228,7 @@
     </div>
 </ng-template>
 
-  
+
 <ng-template #ingredientNested>
     <div class="modal-header">
         <h4 class="modal-title pull-left">Add Ingredient</h4>

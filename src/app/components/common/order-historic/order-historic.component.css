@@ -1,5 +1,6 @@
 
-table tbody tr{
+
+table tbody tr, table tbody tr button{
     color: black;
     font-weight: bold;
 }
@@ -38,14 +39,4 @@ table tbody tr td{
 .loader-container{
     position: relative;
     min-height: 400px;
-}
-
-
-:host/deep/.food-modal-container {
-  max-height: 90vh !important;
-  display: flex;
-}
-
-:host/deep/.food-modal-container .modal-body {
-  overflow-y: scroll;
 }

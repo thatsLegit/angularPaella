@@ -21,13 +21,11 @@ export class AdminFoodComponent implements OnInit {
   foods: Array<Food>;
   foodsDisplayed: Array<Food>;
   categories: Array<Category>;
-  name: String;
-  price: number;
   image: '../../../assets/img/noimage.jpg';
   ingredients: Array<Ingredient>;
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
-  
+
   itemsPerSlide = 3;
   singleSlideOffset = false;
   loadingCarousel: boolean = false;
@@ -48,12 +46,12 @@ export class AdminFoodComponent implements OnInit {
   foodToEdit: Food;
 
 
-  constructor(private foodService: FoodService, private ingredientsService:IngredientsService, 
-    private categoryService: CategoryService, private modalService: BsModalService, 
+  constructor(private foodService: FoodService, private ingredientsService:IngredientsService,
+    private categoryService: CategoryService, private modalService: BsModalService,
     private formBuilder: FormBuilder,private spinnerService: NgxSpinnerService,
-    private ifService: FoodIngredientService) { 
-    
-    
+    private ifService: FoodIngredientService) {
+
+
   }
 
   async ngOnInit() {
@@ -66,13 +64,12 @@ export class AdminFoodComponent implements OnInit {
     this.foodToEdit = null;
     this.foods = await this.foodService.getFood();
     this.currentPage = 1;
-    this.paginationLength = 10;
+    this.paginationLength = 2;
     this.numberOfItems = this.foods.length;
-    this.foodsDisplayed = this.foods.slice(0, 10);
+    this.foodsDisplayed = this.foods.slice(0, 2);
     this.ingredients = await this.ingredientsService.getIngredients();
     this.categories = await this.categoryService.getCategories();
-    console.log(this.categories);
-    
+
     this.loading = false;
   }
 
@@ -86,7 +83,7 @@ export class AdminFoodComponent implements OnInit {
       imageURL: [null, Validators.required],
       categoryId: [null, Validators.required]
     });
-    
+
     this.editFoodForm = this.formBuilder.group({
       name: [null, Validators.required],
       description: [null, Validators.required],
@@ -96,7 +93,7 @@ export class AdminFoodComponent implements OnInit {
       imageURL: [null, Validators.required],
       categoryId: [null, Validators.required]
     });
-    
+
     this.newIngredientForm = this.formBuilder.group({
       ingredientId: [null, Validators.required],
       quantity: [null, [Validators.required, Validators.pattern("^[0-9]{0,9}([.][0-9]{0,9})?$"), Validators.min(0)]],
@@ -107,7 +104,7 @@ export class AdminFoodComponent implements OnInit {
     .subscribe((value) =>{
       this.newIngredient = this.ingredients.find((ing) => ing.IngredientID == value);
     });
-    
+
   }
 
   async addFood(){
@@ -123,7 +120,7 @@ export class AdminFoodComponent implements OnInit {
     for(let ingredient of this.slides){
       sendable.ingredientFoods.push(ingredient.ingredientFood);
     }
-    
+
 
     try{
       const answer = await this.foodService.createFood(sendable);
@@ -151,7 +148,7 @@ export class AdminFoodComponent implements OnInit {
     for(let ingredient of this.slidesEdit){
       sendable.ingredientFoods.push(ingredient.ingredientFood);
     }
-    
+
 
     try{
       const answer = await this.foodService.updateFood(sendable);
@@ -180,7 +177,7 @@ export class AdminFoodComponent implements OnInit {
       class: 'modal-lg food-modal-container'
     });
   }
-  
+
   async openModalEdit(template: TemplateRef<any>, id: number) {
     this.slidesEdit = [];
     this.foodToEdit = this.foodsDisplayed.find((food) => food.foodId === id);
@@ -206,7 +203,7 @@ export class AdminFoodComponent implements OnInit {
       class: 'modal-lg food-modal-container'
     });
   }
-  
+
   openModal2(template: TemplateRef<any>) {
     this.modalRef2 = this.modalService.show(template, {
       class: 'second',
@@ -235,7 +232,7 @@ export class AdminFoodComponent implements OnInit {
     this.slides.splice(index, 1);
     setTimeout(() => {this.loadingCarousel = false}, 500);
   }
-  
+
   editAddNewIngredient(){
     this.slidesEdit.push({
       image: this.newIngredient.imageURL,

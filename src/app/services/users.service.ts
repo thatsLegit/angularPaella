@@ -27,6 +27,14 @@ export class UsersService {
     this.login(registration.email, registration.password);
     return registration;
   }
+
+  getCustomerById(id: number){
+    return this.http.get<User>(environment.api+'/customers' + '/'+id+'?access_token='+encodeURIComponent(this.token)).toPromise();
+  }
+  
+  getAdminById(id: number){
+    return this.http.get<User>(environment.api+'/admins' + '/'+id+'?access_token='+encodeURIComponent(this.token)).toPromise();
+  }
   
   update(user: User): Promise<User>{
     return this.http.put<User>(environment.api+(user.privilege === PrivilegeEnum.ADMIN ? '/admins' : '/customers') + '/'+user.id+'?access_token='+encodeURIComponent(this.token), user).toPromise();

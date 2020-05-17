@@ -9,7 +9,8 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxSpinnerModule } from "ngx-spinner"; 
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -33,6 +34,9 @@ import { AdminGuard } from './guards/admin.guard';
 import { FoodIngredientService } from './services/food-ingredient.service';
 import { PaypalBtnComponent } from './components/common/orders/paypal-btn/paypal-btn.component';
 import { ThankYouComponent } from './components/common/thank-you/thank-you.component';
+import { OrderHistoricComponent } from './components/common/order-historic/order-historic.component';
+import { AdminCategoriesComponent } from './components/admin/admin-categories/admin-categories.component';
+
 
 @NgModule({
   declarations: [
@@ -46,11 +50,14 @@ import { ThankYouComponent } from './components/common/thank-you/thank-you.compo
     OrdersComponent,
     AdminFoodComponent,
     AdminIngredientsComponent,
+    AdminCategoriesComponent,
     AdministrationComponent,
     AdminNavbarComponent,
     CommonComponent,
     ThankYouComponent,
-    PaypalBtnComponent
+    PaypalBtnComponent,
+    OrderHistoricComponent
+
   ],
   imports: [
     BrowserModule,
@@ -63,6 +70,7 @@ import { ThankYouComponent } from './components/common/thank-you/thank-you.compo
     ModalModule.forRoot(),
     CarouselModule.forRoot(),
     PaginationModule.forRoot(),
+    CollapseModule.forRoot(),
     BsDropdownModule.forRoot()
   ],
   providers: [FoodService, UsersService, OrdersService, IngredientsService, CategoryService, FoodIngredientService, AdminGuard],

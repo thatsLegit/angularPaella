@@ -23,6 +23,7 @@ export class FoodComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
+    
     this.food = await this.foodService.getFood(null, null, null, true);
     this.currentPage = 1;
     this.paginationLength = 9;

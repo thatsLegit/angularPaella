@@ -11,14 +11,14 @@ declare let paypal: any;
   styleUrls: ['./paypal-btn.component.css']
 })
 export class PaypalBtnComponent implements OnInit {
-  
+
   @Input() order: Order;
-  
+
   addScript: boolean = false;
   paypalLoad: boolean = true;
 
-  // Account: 
-  // 7+,DMv*V
+  // Account:
+  // sb-ittux1748445@personal.example.com
   // 7+,DMv*V
 
   constructor(private orderService: OrdersService, private router: Router) { }
@@ -48,5 +48,5 @@ export class PaypalBtnComponent implements OnInit {
       }).render('#paypal-button-container');
       this.paypalLoad = true;
   }
-  
+
 }

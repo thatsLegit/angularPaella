@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup
   modalRef: BsModalRef;
 
-  constructor(private usersService: UsersService, private fb: FormBuilder, private router: Router, private modalService: BsModalService) { 
+  constructor(private usersService: UsersService, private fb: FormBuilder, private router: Router, private modalService: BsModalService) {
   }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
-      class: 'modal-lg'
+      class: 'modal-lg, supermodal'
     });
     this.modalRef.setClass
   }

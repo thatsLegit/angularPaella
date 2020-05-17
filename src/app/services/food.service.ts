@@ -48,7 +48,6 @@ export class FoodService {
       }
     }
 
-
     return this.http.get<Array<Food>>(url).toPromise();
   }
 

@@ -17,7 +17,7 @@ export class CategoryService {
       modified = true;
       url += '?description='+encodeURIComponent(description);
     }
-    
+
     if(name){
       if(!modified){
         modified = true;
@@ -29,7 +29,7 @@ export class CategoryService {
 
     return this.http.get<Array<Category>>(url).toPromise();
   }
-  
+
   getCategoryById(id: number):Promise<Category>{
     return this.http.get<Category>(environment.api+'/menu/categories/'+id).toPromise();
   }
@@ -42,7 +42,7 @@ export class CategoryService {
     }
     return this.http.post<Category>(environment.api+'/menu/categories?access_token='+encodeURIComponent(token), category).toPromise();
   }
-  
+
   updateCategory(category: Category): Promise<Category>{
     const token = this.userService.token;
     if(!token){
@@ -51,7 +51,7 @@ export class CategoryService {
     return this.http.put<Category>(environment.api+'/menu/categories/'+category.categoryId+'?access_token='+encodeURIComponent(token), category).toPromise();
   }
 
-  deletecategory(id:String): Promise<any>{
+  deleteCategory(id:String): Promise<any>{
     const token = this.userService.token;
     if(!token){
       return null;

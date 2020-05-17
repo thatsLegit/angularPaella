@@ -1,4 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+
+.food_nav_admin {
+  display: flex;
+  flex: 1 1 auto;
+  font-family: 'Gloria Hallelujah', cursive;
+  background-color: #63401e;
+  box-shadow: 0px 0px 5px 1px #3a2512;
+}
+
+.food_nav_admin .navbar-brand {
+  color: white;
+}
+
+.food_nav_admin > ul.navbar-nav {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.food_nav_admin ul li {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+.food_nav_admin ul li .nav-link {
+  color: white;
+}
+
+
 .navbar-nav li a {
     font-family: 'Gloria Hallelujah', cursive;
 }

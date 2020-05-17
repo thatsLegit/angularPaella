@@ -1,16 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
+#content_container {
+  display: flex;
+  flex: 1 1 auto;
+  padding: 30px;
+}
+
+#content_container .content-item {
+  display: flex;
+}
+#content_container .content-item.info {
+  flex: 3 1 auto;
+  padding: 15px;
+  align-items: center;
+}
+
+#content_container .content-item.photo {
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
 #text{
-    line-height: 1.5;
-    font-weight: bold;
-    font-size: 1.5em;
-    margin : 100px 100px 0 0;
-    width: 500px;
-    font-family: 'Lobster', cursive;
+  line-height: 1.5;
+  font-size: 2.4em;
+  font-family: 'Lobster', cursive;
+  padding: 15px;
+  justify-content: center;
+  display: flex;
+  flex: 1 1 auto;
+  color: #e8e8e8;
 }
 
 #paella{
-    margin-top: 80px;
-    height: 300px;
-    width: 400px;
+  box-shadow: 0px 0px 12px 2px rgba(39, 39, 39, 0.75);
+  border-radius: 10px;
 }
